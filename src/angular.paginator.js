@@ -4,18 +4,29 @@ angular.module('ngPaginator').config(['$provide', function ($provide) {
 
   $provide.provider('$paginator', function () {
 
-    var defaults = this.defaults = {
+    var itemsPerPage = 10;
 
+    this.itemsPerPage = function (count) {
+      if (count) {
+        itemsPerPage = count;
+      } else {
+        return itemsPerpage;
+      }
     };
 
-    function isPromise(possiblePromise) {
-      return angular.isFunction(possiblePromise.then);
-    }
-
-    this.$get = ['$q', function ($q) {
+    this.$get = ['$http', '$q', function ($http, $q) {
 
       function $paginator(config) {
 
+        var promise;
+
+        if (angular.isDefined(config.url)) {
+          promise = $http.jsonp(config.url);
+        } else {
+          promise = config;
+        }
+
+        console.dir(promise);
       };
 
       return $paginator;
