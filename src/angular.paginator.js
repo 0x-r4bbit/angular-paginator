@@ -6,6 +6,7 @@ angular.module('ngPaginator').config(['$provide', function ($provide) {
 
     var $config = {
       itemsPerPage: 10,
+      currentPage: 1,
       requestType: 'jsonp'
     };
 
@@ -29,66 +30,85 @@ angular.module('ngPaginator').config(['$provide', function ($provide) {
 
       function $paginator(options) {
         var promise,
-            config = {};
+            config = {},
+            promisePassed = !angular.isDefined(options.url);
+
+
+        var promiseA = $q.when(options);
+
+        promiseA.then(function (wtfValue) {
+          console.dir(wtfValue);
+        }, function (reason) {
+          console.log(reason);
+        });
+
 
         config.requestType = options.type || $config.requestType;
         config.itemsPerPage = options.itemsPerPage || $config.itemsPerPage;
 
-        if (!angular.isDefined(options.url)) {
+        if (promisePassed) {
           promise = options;
         } else {
           promise = $http[config.requestType](options.url);
         }
 
         promise = promise.then(function (successData) {
-          return paginate(successData.data.data, config);
+
+          var data = 
+            angular.isDefined(options.url) && angular.isDefined(options.model) ? // ToDo: Property check is donw twice!
+            successData.data[options.model] :
+            successData.data;
+
+          return paginate(data, config);
+        }, function (reason) {
+          return $q.reject(reason);
         });
 
         promise.done = function (fn) {
-          promise.then(function (paginatedData) {
-            fn(paginatedData);
+          promise.then(function (data) {
+            fn(data.pages, data.total);
           });
           return promise;
         };
 
         promise.error = function (fn) {
-          promise.then(function (response) {
-            fn(response);
+          promise.then(null, function (reason) {
+            fn(reason);
           });
           return promise;
         };
- 
+
         return promise;
-      };
-
-      $paginator.paginate = function (options) {
-        return $paginator(options);
-      };
-
-      $paginator.itemsPerPage = function () {
-        return config.itemsPerPage;
-      };
-
-      $paginator.requestType = function () {
-        return config.requestType;
       };
 
       function paginate(dataSet, config) {
 
-        var deferred = $q.defer(),
-            paginatedData = [],
-            len = dataSet.length,
-            i = 0;
+        var deferred = $q.defer();
 
-        for (; i < len; ++i) {
-          if (i % config.itemsPerPage === 0) {
-            paginatedData[Math.floor(i / config.itemsPerPage)] = [dataSet[i]];
-          } else {
-            paginatedData[Math.floor(i / config.itemsPerPage)].push(dataSet[i]);
+        if (!angular.isArray(dataSet)) {
+          deferred.reject({
+            pages: [],
+            total: 0
+          });
+        } else {
+
+          var pages = [],
+              len = dataSet.length,
+              i = 0;
+
+          for (; i < len; ++i) {
+            if (i % config.itemsPerPage === 0) {
+              pages[Math.floor(i / config.itemsPerPage)] = [dataSet[i]];
+            } else {
+              pages[Math.floor(i / config.itemsPerPage)].push(dataSet[i]);
+            }
           }
+
+          deferred.resolve({
+            pages: pages,
+            total: pages.length
+          });
         }
- 
-        deferred.resolve(paginatedData);
         return deferred.promise;
       }
 
