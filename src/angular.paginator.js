@@ -6,7 +6,7 @@ angular.module('ngPaginator').config(['$provide', function ($provide) {
 
     var $config = {
       itemsPerPage: 10,
-      currentPage: 1,
+      currentPage: 0,
       requestType: 'jsonp'
     };
 
@@ -44,7 +44,6 @@ angular.module('ngPaginator').config(['$provide', function ($provide) {
 
         promise = promise.then(function (res) {
           if (!usingHttpService || !angular.isDefined(options.model)) {
-            console.dir(res);
             return paginate(res, config);
           }
           return paginate(res[options.model], config);
@@ -54,7 +53,7 @@ angular.module('ngPaginator').config(['$provide', function ($provide) {
 
         promise.done = function (fn) {
           promise.then(function (data) {
-            fn(data.pages, data.total);
+            fn(data);
           });
           return promise;
         };
@@ -65,7 +64,6 @@ angular.module('ngPaginator').config(['$provide', function ($provide) {
           });
           return promise;
         };
-
         return promise;
       };
 
@@ -98,3 +96,30 @@ angular.module('ngPaginator').config(['$provide', function ($provide) {
 
   $provide.provider('$paginator', $PaginatorProvider);
 }]);
+
+angular.module('ngPaginator').directive('paginatorPages', function () {
+  return {
+    restrict: 'E',
+    replace: true,
+    scope: {
+      count: '@'
+    },
+    template: '<ul class="pagination"><li ng-repeat="n in range(count)">{{n+1}}</li></ul>',
+    link: function (scope, element, attrs) {
+
+      scope.range = function (start, end) {
+        var ret = [];
+
+        if (!end) {
+          end = start;
+          start = 0;
+        }
+
+        for (var i = start; i < end; i++) {
+          ret.push(i);
+        }
+        return ret;
+      };
+    }
+  };
+});
