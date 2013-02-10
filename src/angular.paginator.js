@@ -102,9 +102,14 @@ angular.module('ngPaginator').directive('paginatorPages', function () {
     restrict: 'E',
     replace: true,
     scope: {
-      count: '@'
+      count: '@',
+      goTo: '&'
     },
-    template: '<ul class="pagination"><li ng-repeat="n in range(count)">{{n+1}}</li></ul>',
+    template: [
+      '<ul class="pagination">',
+      '<li ng-repeat="n in range(count)"><a ng-click="goTo(n+1)">{{n+1}}</a></li>',
+      '</ul>'
+    ].join(''),
     link: function (scope, element, attrs) {
 
       scope.range = function (start, end) {
