@@ -31,35 +31,23 @@ angular.module('ngPaginator').config(['$provide', function ($provide) {
       function $paginator(options) {
         var promise,
             config = {},
-            promisePassed = !angular.isDefined(options.url);
-
-
-        var promiseA = $q.when(options);
-
-        promiseA.then(function (wtfValue) {
-          console.dir(wtfValue);
-        }, function (reason) {
-          console.log(reason);
-        });
-
+            usingHttpService = angular.isDefined(options.url);
 
         config.requestType = options.type || $config.requestType;
         config.itemsPerPage = options.itemsPerPage || $config.itemsPerPage;
 
-        if (promisePassed) {
+        if (!usingHttpService) {
           promise = options;
         } else {
           promise = $http[config.requestType](options.url);
         }
 
-        promise = promise.then(function (successData) {
-
-          var data = 
-            angular.isDefined(options.url) && angular.isDefined(options.model) ? // ToDo: Property check is donw twice!
-            successData.data[options.model] :
-            successData.data;
-
-          return paginate(data, config);
+        promise = promise.then(function (res) {
+          if (!usingHttpService || !angular.isDefined(options.model)) {
+            console.dir(res);
+            return paginate(res, config);
+          }
+          return paginate(res[options.model], config);
         }, function (reason) {
           return $q.reject(reason);
         });
@@ -85,13 +73,7 @@ angular.module('ngPaginator').config(['$provide', function ($provide) {
 
         var deferred = $q.defer();
 
-        if (!angular.isArray(dataSet)) {
-          deferred.reject({
-            pages: [],
-            total: 0
-          });
-        } else {
-
+        if (angular.isArray(dataSet)) {
           var pages = [],
               len = dataSet.length,
               i = 0;
@@ -104,14 +86,12 @@ angular.module('ngPaginator').config(['$provide', function ($provide) {
             }
           }
 
-          deferred.resolve({
-            pages: pages,
-            total: pages.length
-          });
+          deferred.resolve({pages: pages, total: pages.length});
+        } else {
+          deferred.reject({pages: [], total: 0});
         }
         return deferred.promise;
       }
-
       return $paginator;
     }];
   }
