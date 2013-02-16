@@ -1,0 +1,22 @@
+{
+  "name": "ng-paginator",
+  "title": "ngPaginator",
+  "description": "A AngularJS module for pagination",
+  "version": "0.1.0",
+  "homepage": "https://github.com/PascalPrecht/ngPaginator",
+  "author": {
+    "name": "Pascal Precht",
+    "email": "pascal.precht@gmail.com",
+    "url": "http://pascalprecht.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:PascalPrecht/ngPaginator.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "0.4.x",
+    "testacular": "0.4.0",
+    "grunt-testacular": "0.2.2"
+  }
+}
