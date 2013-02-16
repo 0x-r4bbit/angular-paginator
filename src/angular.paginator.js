@@ -97,7 +97,7 @@ angular.module('ngPaginator').config(['$provide', function ($provide) {
   $provide.provider('$paginator', $PaginatorProvider);
 }]);
 
-angular.module('ngPaginator').directive('paginatorPages', function () {
+angular.module('ngPaginator').directive('paginator', function () {
   return {
     restrict: 'E',
     replace: true,
@@ -106,8 +106,8 @@ angular.module('ngPaginator').directive('paginatorPages', function () {
       goTo: '&'
     },
     template: [
-      '<ul class="pagination">',
-      '<li ng-repeat="n in range(count)"><a ng-click="goTo(n+1)">{{n+1}}</a></li>',
+      '<ul class="paginator">',
+      '<li ng-repeat="n in range(count)"><a ng-click="goTo({page: n+1})">{{n+1}}</a></li>',
       '</ul>'
     ].join(''),
     link: function (scope, element, attrs) {
