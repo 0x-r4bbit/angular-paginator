@@ -1,22 +1,24 @@
 {
-  "name": "ng-paginator",
-  "title": "ngPaginator",
-  "description": "A AngularJS module for pagination",
+  "name": "angular-paginator",
   "version": "0.1.0",
-  "homepage": "https://github.com/PascalPrecht/ngPaginator",
+  "description": "A paginator module for AngularJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/karma/bin/karma start --browsers Firefox --single-run"
+  },
   "author": {
-    "name": "Pascal Precht",
-    "email": "pascal.precht@gmail.com",
-    "url": "http://pascalprecht.github.com"
+    "name": "Pascal Precht"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:PascalPrecht/ngPaginator.git"
-  },
-  "dependencies": {},
+  "license": "WTFPL",
   "devDependencies": {
-    "grunt": "0.4.x",
-    "testacular": "0.4.0",
-    "grunt-testacular": "0.2.2"
+    "karma": "~0.8.5",
+    "grunt": "~0.4.1",
+    "grunt-contrib-watch": "~0.4.2",
+    "grunt-contrib-concat": "~0.3.x",
+    "grunt-contrib-uglify": "~0.2.x",
+    "grunt-contrib-jshint": "~0.4.x",
+    "grunt-karma": "~0.4.x",
+    "grunt-conventional-changelog": "0.0.12",
+    "grunt-ngmin": "0.0.2"
   }
 }

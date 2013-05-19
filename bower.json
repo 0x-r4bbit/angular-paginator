@@ -1,0 +1,16 @@
+{
+  "author": "Pascal Precht",
+  "name": "angular-paginator",
+  "description": "A paginator module for AngularJS",
+  "version": "0.1.0",
+  "homepage": "http://github.com/PascalPrecht/angular-paginator",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/PascalPrecht/angular-paginator"
+  },
+  "main": "./build/angular-paginator",
+  "dependencies": {
+    "angular": "1.0.6",
+    "angular-mocks": "1.0.6"
+  }
+}
