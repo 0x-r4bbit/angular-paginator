@@ -2,9 +2,7 @@ angular.module('pascalprecht.paginator', ['ng']);
 
 angular.module('pascalprecht.paginator').provider('$paginate', function () {
 
-  var $perPage = 10,
-      $currentPage = 0;
-
+  var $perPage = 10;
 
   this.perPage = function (count) {
     if (!count) {
@@ -27,6 +25,7 @@ angular.module('pascalprecht.paginator').provider('$paginate', function () {
       }
 
       $q.when(someThing).then(function (data) {
+
         paginate(data, config).then(function (paginatorObj) {
           deferred.resolve(paginatorObj);
         }, function (paginatorObj) {

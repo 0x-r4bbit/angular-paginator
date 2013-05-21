@@ -28,14 +28,16 @@ describe('pascalprecht.paginator', function () {
 
     it('should return paginator data object', function () {
       inject(function ($paginate) {
-        var items = [{},{},{},{}];
-
+        var items = [{},{},{},{}],
+            obj;
         $paginate(items).then(function (data) {
-          expect(data.pages).toBeDefined();
-          expect(data.total).toBeDefined();
-          expect(data.current).toBeDefined();
-          exoect(data.perPage).toBeDefined();
+          obj = data;
         });
+
+        expect(obj.pages).toBeDefined();
+        expect(obj.total).toBeDefined();
+        expect(obj.current).toBeDefined();
+        exoect(obj.perPage).toBeDefined();
       });
     });
 
