@@ -1,8 +1,8 @@
-var app = angular.module('pascalprecht.paginator', ['ng']);
-app.provider('$paginate', function () {
+var paginatorApp = angular.module('pascalprecht.paginator', ['ng']);
+paginatorApp.provider('$paginate', function () {
   var $perPage = 10;
   this.perPage = function (count) {
-    if(!count) {
+    if (!count) {
       return $perPage;
     }
     $perPage = count;
@@ -11,9 +11,9 @@ app.provider('$paginate', function () {
     var $paginate = function (someThing, options) {
       var config = {},
       deferred   = $q.defer();
-      if(options) {
+      if (options) {
         config.perPage = options.perPage || $perPage;
-      }else{
+      } else {
         config.perPage = $perPage
       }
       $q.when(someThing).then(function (data) {
@@ -27,13 +27,14 @@ app.provider('$paginate', function () {
     };
     function paginate(dataSet, config) {
       var deferred = $q.defer();
-      if(angular.isArray(dataSet)) {
+      if (angular.isArray(dataSet)) {
         var pages = [],
-        len       = dataSet.length;
-        for(var i = 0; i < len; ++i) {
-          if(i % config.perPage === 0) {
+        len       = dataSet.length,
+        i         = 0;
+        for (; i < len; ++i) {
+          if (i % config.perPage === 0) {
             pages[Math.floor(i / config.perPage)] = [dataSet[i]];
-          }else{
+          } else {
             pages[Math.floor(i / config.perPage)].push(dataSet[i]);
           }
         }
@@ -43,7 +44,7 @@ app.provider('$paginate', function () {
           perPage: config.perPage,
           current: config.current
         });
-      }else{
+      } else {
         deferred.reject({
           pages: [], 
           total: 0, 
