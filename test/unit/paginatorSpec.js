@@ -1,81 +1,149 @@
 describe('pascalprecht.paginator', function () {
+
+  var $paginate, $q, $rootScope;
+
   beforeEach(module('pascalprecht.paginator'));
+
+  beforeEach(inject(function (_$paginate_, _$q_, _$rootScope_) {
+    $paginate = _$paginate_;
+    $q = _$q_;
+    $rootScope = _$rootScope_;
+  }));
+
   it('should have $paginate service', function () {
-    inject(function ($paginate) {
-      expect($paginate).toBeDefined();
-    });
+    expect($paginate).toBeDefined();
   });
+
   describe('$paginate', function () {
+
     it('should be a function', function () {
-      inject(function ($paginate) {
-        expect(typeof $paginate).toBe('function');
-      });
+      expect(typeof $paginate).toBe('function');
     });
+
     it('should return object', function () {
-      inject(function ($paginate) {
-        var items = [{},{},{},{}];
-        $paginate(items).then(function (data) {
-          expect(typeof data).toBe('object');
-        });
+      var items = [{},{},{},{}],
+          deferred = $q.defer(),
+          promise = deferred.promise,
+          data;
+
+      promise.then(function (value) {
+        data = value;
       });
+
+      $paginate(items).then(function (data) {
+        deferred.resolve(data);
+      });
+
+      $rootScope.$apply();
+
+      expect(typeof data).toBe('object');
     });
+
     it('should return paginator data object', function () {
       inject(function ($paginate) {
-        var items = [{},{},{},{}];
-        var obj;
+        var items = [{},{},{},{}],
+            deferred = $q.defer(),
+            promise = deferred.promise,
+            obj;
+
+        promise.then(function (value) {
+          obj = value;
+        });
+
         $paginate(items).then(function (data) {
           obj = data;
-          // 4 lines should be here moved from line 35
-          expect(obj.pages).toBeDefined();
-          expect(obj.total).toBeDefined();
-          expect(obj.current).toBeDefined();
-          exoect(obj.perPage).toBeDefined();
         });
-//        this 4 lines should not be here because the promise object is not ready yet moved up to line 29
-//        expect(obj.pages).toBeDefined();
-//        expect(obj.total).toBeDefined();
-//        expect(obj.current).toBeDefined();
-//        exoect(obj.perPage).toBeDefined();
+
+        $rootScope.$apply();
+
+        expect(obj.pages).toBeDefined();
+        expect(obj.total).toBeDefined();
+        expect(obj.current).toBeDefined();
+        expect(obj.perPage).toBeDefined();
       });
     });
+
     describe('paginatorObject#pages', function () {
       it('should be an array', function () {
-        inject(function ($paginate) {
-          var items = [{},{},{},{}];
-          $paginate(items).then(function (data) {
-            expect(typeof data.pages).toBe('array');
-          });
+        var items = [{},{},{},{}],
+            deferred = $q.defer(),
+            promise = deferred.promise,
+            obj;
+
+        promise.then(function (value) {
+          obj = value;
         });
+
+        $paginate(items).then(function (data) {
+          obj = data;
+        });
+
+        $rootScope.$apply();
+        expect(obj.pages.length).toBeDefined();
       });
     });
+
     describe('paginatorObject#current', function () {
+
       it('should be a number', function () {
-        inject(function ($paginate) {
-          var items = [{},{},{},{}];
-          $paginate(items).then(function (data) {
-            expect(typeof data.current).toBe('number');
-          });
+        var items = [{},{},{},{}],
+            deferred = $q.defer(),
+            promise = deferred.promise,
+            obj;
+
+        promise.then(function (value) {
+          obj = value;
         });
+
+        $paginate(items).then(function (data) {
+          deferred.resolve(data);
+        });
+
+        $rootScope.$apply();
+
+        expect(typeof obj.current).toBe('number');
       });
     });
+
     describe('paginatorObject#perPage', function () {
+
       it('should be a number', function () {
-        inject(function ($paginate) {
-          var items = [{},{},{},{}];
-          $paginate(items).then(function (data) {
-            expect(typeof data.perPage).toBe('number');
-          });
+        var items = [{},{},{},{}],
+            deferred = $q.defer(),
+            promise = deferred.promise,
+            obj;
+
+        promise.then(function (value) {
+          obj = value;
         });
+
+        $paginate(items).then(function (data) {
+          deferred.resolve(data);
+        });
+
+        $rootScope.$apply();
+        expect(typeof obj.perPage).toBe('number');
       });
     });
+
     describe('paginatorObject#total', function () {
+
       it('should be a number', function () {
-        inject(function ($paginate) {
-          var items = [{},{},{},{}];
-          $paginate(items).then(function (data) {
-            expect(typeof data.total).toBe('number');
-          });
+        var items = [{},{},{},{}],
+            deferred = $q.defer(),
+            promise = deferred.promise,
+            obj;
+
+        promise.then(function (value) {
+          obj = value;
         });
+
+        $paginate(items).then(function (data) {
+          deferred.resolve(data);
+        });
+
+        $rootScope.$apply();
+        expect(typeof obj.total).toBe('number');
       });
     });
   });
