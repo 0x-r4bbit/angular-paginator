@@ -108,6 +108,44 @@ describe('pascalprecht.paginator', function () {
 
         expect(typeof obj.current).toBe('number');
       });
+// new tests
+      it('should be a equal to 0', function () {
+        var items    = [{},{},{},{}],
+            deferred = $q.defer(),
+            promise  = deferred.promise,
+            obj;
+
+        promise.then(function (value) {
+          obj = value;
+        });
+
+        $paginate(items).then(function (data) {
+          deferred.resolve(data);
+        });
+
+        $rootScope.$apply();
+
+        expect(obj.current).toEqual(0);
+      });
+      it('should be equal to 5', function () {
+        var items    = [{},{},{},{}],
+            deferred = $q.defer(),
+            promise  = deferred.promise,
+            obj;
+
+        promise.then(function (value) {
+          obj = value;
+        });
+
+        $paginate(items, {current: 5}).then(function (data) {
+          deferred.resolve(data);
+        });
+
+        $rootScope.$apply();
+
+        expect(obj.current).toEqual(5);
+      });
+
     });
 
     describe('paginatorObject#perPage', function () {
@@ -129,6 +167,42 @@ describe('pascalprecht.paginator', function () {
         $rootScope.$apply();
         expect(typeof obj.perPage).toBe('number');
       });
+// new tests
+      it('should be equal to 10', function () {
+        var items    = [{},{},{},{}],
+            deferred = $q.defer(),
+            promise  = deferred.promise,
+            obj;
+
+        promise.then(function (value) {
+          obj = value;
+        });
+
+        $paginate(items).then(function (data) {
+          deferred.resolve(data);
+        });
+
+        $rootScope.$apply();
+        expect(obj.perPage).toEqual(10);
+      });
+
+      it('should be equal to 25', function () {
+        var items    = [{},{},{},{}],
+            deferred = $q.defer(),
+            promise  = deferred.promise,
+            obj;
+
+        promise.then(function (value) {
+          obj = value;
+        });
+
+        $paginate(items, {perPage: 25}).then(function (data) {
+          deferred.resolve(data);
+        });
+
+        $rootScope.$apply();
+        expect(obj.perPage).toEqual(25);
+      });
     });
 
     describe('paginatorObject#total', function () {
@@ -149,119 +223,6 @@ describe('pascalprecht.paginator', function () {
 
         $rootScope.$apply();
         expect(typeof obj.total).toBe('number');
-      });
-    });
-// new tests
-    describe('paginatorObject#perPage', function () {
-
-      it('should be equal to 10', function () {
-        var items    = [{},{},{},{}],
-            deferred = $q.defer(),
-            promise  = deferred.promise,
-            obj;
-
-        promise.then(function (value) {
-          obj = value;
-        });
-
-        $paginate(items).then(function (data) {
-          deferred.resolve(data);
-        });
-
-        $rootScope.$apply();
-        expect(obj.perPage).toEqual(10);
-      });
-    });
-    describe('paginatorObject#perPage', function () {
-
-      it('should be equal to 25', function () {
-        var items    = [{},{},{},{}],
-            deferred = $q.defer(),
-            promise  = deferred.promise,
-            obj;
-
-        promise.then(function (value) {
-          obj         = value;
-          obj.perPage = 25;
-        });
-
-        $paginate(items).then(function (data) {
-          deferred.resolve(data);
-        });
-
-        $rootScope.$apply();
-        expect(obj.perPage).toEqual(25);
-      });
-    });
-
-    describe('paginatorObject#current', function () {
-
-      it('should be a equal to 0', function () {
-        var items    = [{},{},{},{}],
-            deferred = $q.defer(),
-            promise  = deferred.promise,
-            obj;
-
-        promise.then(function (value) {
-          obj = value;
-        });
-
-        $paginate(items).then(function (data) {
-          deferred.resolve(data);
-        });
-
-        $rootScope.$apply();
-
-        expect(obj.current).toEqual(0);
-      });
-    });
-
-    describe('paginatorObject#current', function () {
-
-      it('should be equal to 5', function () {
-        var items    = [{},{},{},{}],
-            deferred = $q.defer(),
-            promise  = deferred.promise,
-            obj;
-
-        promise.then(function (value) {
-          obj         = value;
-          obj.current = 5
-        });
-
-        $paginate(items).then(function (data) {
-          deferred.resolve(data);
-        });
-
-        $rootScope.$apply();
-
-        expect(obj.current).toEqual(5);
-      });
-    });
-
-    describe('paginatorObject#total', function () {
-
-      it('should be equal to pages.length', function () {
-        var items    = [{},{},{},{}],
-            deferred = $q.defer(),
-            promise  = deferred.promise,
-            obj;
-
-        promise.then(function (value) {
-          obj       = value;
-          obj.page  = [];
-          // I think the total variable should get updated automaticly
-          // with a watcher or something.
-          // removing the next line will cause the test to fail.
-          obj.total = obj.page.length;
-        });
-
-        $paginate(items).then(function (data) {
-          deferred.resolve(data);
-        });
-
-        $rootScope.$apply();
-        expect(obj.total).toEqual(0);
       });
     });
 

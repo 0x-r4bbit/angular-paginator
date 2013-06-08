@@ -76,8 +76,8 @@ paginatorApp.provider('$paginate', function () {
       if (angular.isArray(dataSet)) {
 
         var pages = [],
-            len = dataSet.length,
-            i = 0;
+            len   = dataSet.length,
+            i     = 0;
 
         for (; i < len; ++i) {
           if (i % config.perPage === 0) {
